@@ -1,0 +1,39 @@
+Peer Compliance Audit Report: Platform Risk Research Agent
+
+Auditor: Kimia Asgari System builder: Nelly Date: 2026-08-18 Basis for this report: Nelly's Phase 1 system brief only (self-audit findings not exchanged, per lab ground rules)
+
+Section 1 — System summary
+
+The Platform Risk Research Agent helps a company decide whether to trust an AI vendor or no-code platform. Given a vendor name, an intended use case, and basic context about the buyer's own company, the system searches the web, checks compliance signals, and produces a single report: a trust score, six risk-area scores, a confidence tag for each finding, and a final recommended/not-recommended verdict. If the verdict is negative, the report also names two or three alternative vendors with a comparison table. No human reviews the report before the buyer sees it — this is a deliberate design choice, made self-serve and fast by removing the review step.
+
+Section 2 — Risk classification
+
+First-pass tier: Minimal risk under the AI Act's own risk tiers.
+
+Justification: The system doesn't perform any Article 5 prohibited practice, and none of the eight Annex III high-risk categories apply on my reading, because all of them concern decisions made about natural persons (employment, essential services, education, law enforcement, migration, justice, biometrics, critical infrastructure), while this system evaluates and scores a vendor company, not a person.
+
+Important caveat: A minimal AI Act tier is not the same thing as a low-stakes system. The complete absence of human review before a consequential, third-party-affecting verdict is the central issue in this audit, and it exists independently of which AI Act box the system falls into — see Finding 1.
+
+Section 3 — Role map
+Role	Who	Key obligations
+Provider (of the system)	Nelly, as the course-project builder. No named production company is described in the brief, unlike a scenario where a specific employer builds and sells the tool.	Under a minimal-risk tier, no mandatory high-risk AI Act obligations apply. Voluntary adoption of good-practice safeguards (documented scoring basis, disclosure of automation) is strongly advisable given the no-review design.
+Deployer	The buyer company (or a consultant running it on a client's behalf)	Should understand the verdict is fully automated and unreviewed, and should treat it as one input rather than a final answer — this is a deployment-practice question more than a legal obligation at this tier.
+Third-party vendor	Underlying LangGraph agent framework, and — not explicitly named in the brief — whatever LLM/search infrastructure powers the research and scoring.	Not fully mappable from the brief; see Clarifying Question 1 and the general note that the specific model/search provider isn't named.
+The vendor being scored	Not a "role" under the AI Act (provider/deployer/user), but a materially affected third party with no visibility into or recourse against the process.	No formal AI Act obligation runs to them at this tier, which is itself worth naming as a gap — see Finding 4.
+Section 4 — Compliance findings
+
+Finding 1 — No human review before a consequential, third-party-affecting verdict Severity: Significant Description: The system is explicitly designed with no human check between the automated report and the buyer's decision. The verdict can recommend against a real vendor and actively steer the buyer toward named competitors. This isn't a formal high-risk AI Act obligation at the current tier, but it's a real governance and liability exposure: an unreviewed automated verdict with commercial consequences for a company that has no visibility into how it was scored. Recommended action: Add at least a lightweight review or appeal mechanism — even something as simple as letting a scored vendor request a re-check with a human looking at the "no signal found" and "inferred" items — before scaling this beyond a course project. Escalation needed? Yes — to whoever would own product/legal risk in a production version, before any real vendors are scored in a way that reaches actual buyers.
+
+Finding 2 — Compliance-posture score basis, now documented but not yet surfaced to users Severity: Minor Description: Originally undefined in the brief. Nelly's self-audit resolved this: the compliance-posture score draws on her own authored framework — six failure patterns from her book The Interface Is Not the System: Why Control, Trust, and Responsibility Break at Scale in AI Systems, plus four failure modes from ControlGap — referenced against SOC 2, GDPR, ISO 27001, HIPAA, PCI, and FedRAMP. The scoring basis is real and documented; what's still missing is surfacing it to the people reading the report. Recommended action: Cite the book and ControlGap explicitly in the report's methodology section (or an "about this score" note), so a buyer or scored vendor can see what the compliance-posture score is actually checked against, not just that it exists internally. Escalation needed? No — this is a product-documentation fix, not a legal escalation on its own.
+
+Finding 3 — Unclear handling of "no signal found" results Severity: Minor Description: The confidence-tag system is good practice, but the brief doesn't say how a "no signal found" tag on one of the six risk areas affects the overall trust score or verdict. If absence of evidence quietly counts against a vendor, that's a fairness issue baked into the scoring logic. Recommended action: Clarify and document how missing signal is weighted, and consider surfacing it distinctly from an actual negative finding in the final verdict. Escalation needed? No.
+
+Finding 4 — Reputational and commercial exposure for scored vendors (parallel legal issue, not AI Act) Severity: Significant Description: A "not recommended" verdict, generated without human review and naming specific competitor alternatives, is a real commercial statement about a real company. This raises questions outside the AI Act itself — around accuracy/liability if a vendor is wrongly scored, and fair-comparison concerns given that named competitors are recommended in the same report. Recommended action: Get a legal read on defamation/unfair-competition exposure before any production use where real, named vendors are scored and shown to third-party buyers. Escalation needed? Yes — to legal counsel, separate from the AI Act compliance track.
+
+Section 5 — Overall recommendation
+
+Proceed with conditions. There's no blocking AI Act issue — no prohibited practice, and I don't believe the current design falls into a high-risk Annex III category, since the system evaluates companies rather than people. The compliance-posture scoring basis (Finding 2) turned out to be well-documented internally, just not yet surfaced to report readers — a Minor fix. The Significant items that should be resolved before this moves toward any real production use with real vendors are: (1) some form of human check or appeal path given the fully automated, no-review design (Finding 1), and (2) the reputational/legal exposure of automatically publishing negative verdicts about named companies (Finding 4), which should get a legal read before scaling, even though it sits outside the AI Act itself.
+
+Section 6 — What this report is not
+
+This report is not a legal opinion, not a conformity assessment, and not a certification. It reflects an independent peer review conducted for a course exercise, based solely on a written system brief, without access to the underlying code or Nelly's own self-audit. All conclusions — especially the risk-tier classification and the reputational/legal exposure flagged in Finding 4 — should be verified with qualified legal counsel before any production use, particularly one that scores and names real companies.
